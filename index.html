@@ -1,76 +1,534 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Online Blood Donation & Matchmaking Platform</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodConnect - Save Lives, Donate Blood</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>BloodLink</h1>
-    <nav>
-      <button id="registerTab">Register</button>
-      <button id="searchTab">Find Donor</button>
-    </nav>
-  </header>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <div class="logo">
+                    <h1>🩸 BloodConnect</h1>
+                </div>
+                <nav class="nav" id="mainNav">
+                    <ul class="nav__list">
+                        <li><a href="#home" onclick="showSection('home')">Home</a></li>
+                        <li><a href="#dashboard" onclick="showSection('dashboard')">Dashboard</a></li>
+                        <li><a href="#find-donors" onclick="showSection('find-donors')">Find Donors</a></li>
+                        <li><a href="#blood-camps" onclick="showSection('blood-camps')">Blood Camps</a></li>
+                        <li><a href="#profile" onclick="showSection('profile')">Profile</a></li>
+                    </ul>
+                </nav>
+                <div class="header__actions">
+                    <button class="btn btn--emergency" id="emergencyBtn" onclick="triggerEmergency()">
+                        🚨 Emergency
+                    </button>
+                    <button class="btn btn--secondary" id="authBtn" onclick="showAuth()">Login</button>
+                </div>
+            </div>
+        </div>
+    </header>
 
-  <main>
-    <!-- Registration Form -->
-    <section id="registrationSection">
-      <h2>Register as Donor or Recipient</h2>
-      <form id="registrationForm">
-        <input type="text" placeholder="Full Name" required id="name"/>
-        <select id="role" required>
-          <option value="" disabled selected>Select Role</option>
-          <option value="donor">Donor</option>
-          <option value="recipient">Recipient</option>
-        </select>
-        <select id="bloodType" required>
-          <option value="" disabled selected>Blood Type</option>
-          <option value="A+">A+</option>
-          <option value="A-">A-</option>
-          <option value="B+">B+</option>
-          <option value="B-">B-</option>
-          <option value="O+">O+</option>
-          <option value="O-">O-</option>
-          <option value="AB+">AB+</option>
-          <option value="AB-">AB-</option>
-        </select>
-        <input type="text" placeholder="Location (City)" required id="location"/>
-        <textarea placeholder="Medical History (optional)" id="medicalHistory"></textarea>
-        <button type="submit">Register</button>
-      </form>
-      <div id="registerSuccess"></div>
-    </section>
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Home Section -->
+        <section id="home" class="section home-section">
+            <div class="container">
+                <div class="hero">
+                    <div class="hero__content">
+                        <h1 class="hero__title">Every Drop Counts<br>Every Life Matters</h1>
+                        <p class="hero__subtitle">Connect blood donors with recipients instantly. Save lives through our smart matching platform.</p>
+                        <div class="hero__actions">
+                            <button class="btn btn--primary btn--lg" onclick="showRegistration('donor')">
+                                Become a Donor
+                            </button>
+                            <button class="btn btn--outline btn--lg" onclick="showRegistration('recipient')">
+                                Find Blood
+                            </button>
+                        </div>
+                    </div>
+                    <div class="hero__stats">
+                        <div class="stat-card">
+                            <h3>1,500+</h3>
+                            <p>Active Donors</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>850+</h3>
+                            <p>Lives Saved</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>25+</h3>
+                            <p>Cities Covered</p>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Recipient Search -->
-    <section id="searchSection" style="display:none;">
-      <h2>Find Nearby Compatible Donors</h2>
-      <form id="searchForm">
-        <select id="searchBloodType" required>
-          <option value="" disabled selected>Required Blood Type</option>
-          <option value="A+">A+</option>
-          <option value="A-">A-</option>
-          <option value="B+">B+</option>
-          <option value="B-">B-</option>
-          <option value="O+">O+</option>
-          <option value="O-">O-</option>
-          <option value="AB+">AB+</option>
-          <option value="AB-">AB-</option>
-        </select>
-        <input type="text" placeholder="Your Location (City)" required id="searchLocation"/>
-        <button type="submit">Search</button>
-      </form>
-      <div id="searchResults"></div>
-      <div id="map"></div>
-    </section>
-  </main>
+                <!-- Blood Compatibility Chart -->
+                <div class="compatibility-section">
+                    <h2>Blood Type Compatibility</h2>
+                    <div class="compatibility-grid">
+                        <div class="compatibility-item">
+                            <h4>O- (Universal Donor)</h4>
+                            <p>Can donate to: All blood types</p>
+                            <div class="blood-types">
+                                <span class="blood-type">O-</span>
+                                <span class="blood-type">O+</span>
+                                <span class="blood-type">A-</span>
+                                <span class="blood-type">A+</span>
+                                <span class="blood-type">B-</span>
+                                <span class="blood-type">B+</span>
+                                <span class="blood-type">AB-</span>
+                                <span class="blood-type">AB+</span>
+                            </div>
+                        </div>
+                        <div class="compatibility-item">
+                            <h4>AB+ (Universal Recipient)</h4>
+                            <p>Can receive from: All blood types</p>
+                            <div class="blood-types">
+                                <span class="blood-type">O-</span>
+                                <span class="blood-type">O+</span>
+                                <span class="blood-type">A-</span>
+                                <span class="blood-type">A+</span>
+                                <span class="blood-type">B-</span>
+                                <span class="blood-type">B+</span>
+                                <span class="blood-type">AB-</span>
+                                <span class="blood-type">AB+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <footer>
-    <p>© 2025 BloodLink Platform</p>
-  </footer>
+        <!-- Registration Modal -->
+        <div id="registrationModal" class="modal hidden">
+            <div class="modal__content">
+                <div class="modal__header">
+                    <h2 id="registrationTitle">Register as Donor</h2>
+                    <button class="modal__close" onclick="hideRegistration()">×</button>
+                </div>
+                <div class="modal__body">
+                    <form id="registrationForm">
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="regName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="regEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-control" id="regPhone" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Blood Type</label>
+                            <select class="form-control" id="regBloodType" required>
+                                <option value="">Select Blood Type</option>
+                                <option value="O-">O-</option>
+                                <option value="O+">O+</option>
+                                <option value="A-">A-</option>
+                                <option value="A+">A+</option>
+                                <option value="B-">B-</option>
+                                <option value="B+">B+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="AB+">AB+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">City</label>
+                            <input type="text" class="form-control" id="regCity" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Age</label>
+                            <input type="number" class="form-control" id="regAge" min="18" max="65" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Gender</label>
+                            <select class="form-control" id="regGender" required>
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full-width">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-  <script src="main.js"></script>
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section dashboard-section hidden">
+            <div class="container">
+                <div class="dashboard-header">
+                    <h1 id="dashboardTitle">Welcome back, User!</h1>
+                    <div class="dashboard-actions">
+                        <button class="btn btn--primary" onclick="toggleAvailability()" id="availabilityBtn">
+                            Available for Donation
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Donor Dashboard -->
+                <div id="donorDashboard" class="dashboard-content">
+                    <div class="dashboard-grid">
+                        <div class="card">
+                            <div class="card__body">
+                                <h3>Donation Statistics</h3>
+                                <div class="stats-grid">
+                                    <div class="stat">
+                                        <span class="stat__number" id="donationCount">5</span>
+                                        <span class="stat__label">Total Donations</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat__number" id="livesImpacted">15</span>
+                                        <span class="stat__label">Lives Impacted</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat__number" id="nextEligible">19</span>
+                                        <span class="stat__label">Days to Next Donation</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card__body">
+                                <h3>Your Badges</h3>
+                                <div class="badges" id="userBadges">
+                                    <span class="badge badge--gold">🏆 Life Saver</span>
+                                    <span class="badge badge--silver">🩸 First Donor</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card__body">
+                                <h3>Recent Requests</h3>
+                                <div id="recentRequests">
+                                    <div class="request-item">
+                                        <div class="request-info">
+                                            <p><strong>Emergency Case #001</strong></p>
+                                            <p>Blood Type: O-, Location: Apollo Hospital</p>
+                                            <span class="status status--error">Critical</span>
+                                        </div>
+                                        <button class="btn btn--primary btn--sm">Respond</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recipient Dashboard -->
+                <div id="recipientDashboard" class="dashboard-content hidden">
+                    <div class="dashboard-grid">
+                        <div class="card">
+                            <div class="card__body">
+                                <h3>Your Current Request</h3>
+                                <div id="currentRequest">
+                                    <p>Blood Type Needed: <strong>B+</strong></p>
+                                    <p>Urgency: <span class="status status--warning">High</span></p>
+                                    <p>Date Needed: August 7, 2025</p>
+                                    <button class="btn btn--primary">Update Request</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card__body">
+                                <h3>Matched Donors</h3>
+                                <div id="matchedDonors">
+                                    <div class="donor-match">
+                                        <div class="donor-info">
+                                            <h4>Rajesh Kumar</h4>
+                                            <p>Blood Type: O+, Distance: 2.5km</p>
+                                            <p>Last Donation: May 1, 2025</p>
+                                        </div>
+                                        <button class="btn btn--primary btn--sm">Contact</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Find Donors Section -->
+        <section id="find-donors" class="section find-donors-section hidden">
+            <div class="container">
+                <h1>Find Blood Donors</h1>
+                
+                <div class="search-filters">
+                    <div class="filter-group">
+                        <label class="form-label">Blood Type Needed</label>
+                        <select class="form-control" id="searchBloodType">
+                            <option value="">All Types</option>
+                            <option value="O-">O-</option>
+                            <option value="O+">O+</option>
+                            <option value="A-">A-</option>
+                            <option value="A+">A+</option>
+                            <option value="B-">B-</option>
+                            <option value="B+">B+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="AB+">AB+</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-control" id="searchCity" placeholder="Enter city">
+                    </div>
+                    <div class="filter-group">
+                        <label class="form-label">Distance (km)</label>
+                        <select class="form-control" id="searchDistance">
+                            <option value="5">Within 5km</option>
+                            <option value="10">Within 10km</option>
+                            <option value="25">Within 25km</option>
+                            <option value="50">Within 50km</option>
+                        </select>
+                    </div>
+                    <button class="btn btn--primary" onclick="searchDonors()">Search</button>
+                </div>
+
+                <div class="donors-grid" id="donorsGrid">
+                    <div class="donor-card">
+                        <div class="donor-info">
+                            <h3>Rajesh Kumar</h3>
+                            <div class="donor-details">
+                                <span class="blood-type-badge">O+</span>
+                                <span class="location">📍 Bengaluru</span>
+                                <span class="distance">2.5km away</span>
+                            </div>
+                            <div class="donor-badges">
+                                <span class="badge badge--small">✓ Verified</span>
+                                <span class="badge badge--small">🏆 Life Saver</span>
+                            </div>
+                            <div class="availability">
+                                <span class="status status--success">Available</span>
+                                <span class="last-donation">Last donation: May 1, 2025</span>
+                            </div>
+                        </div>
+                        <div class="donor-actions">
+                            <button class="btn btn--primary btn--sm" onclick="contactDonor('1')">Contact</button>
+                            <button class="btn btn--secondary btn--sm" onclick="viewProfile('1')">View Profile</button>
+                        </div>
+                    </div>
+
+                    <div class="donor-card">
+                        <div class="donor-info">
+                            <h3>Priya Sharma</h3>
+                            <div class="donor-details">
+                                <span class="blood-type-badge">A+</span>
+                                <span class="location">📍 Bengaluru</span>
+                                <span class="distance">3.2km away</span>
+                            </div>
+                            <div class="donor-badges">
+                                <span class="badge badge--small">✓ Verified</span>
+                                <span class="badge badge--small">🩸 Regular Donor</span>
+                            </div>
+                            <div class="availability">
+                                <span class="status status--success">Available</span>
+                                <span class="last-donation">Last donation: June 15, 2025</span>
+                            </div>
+                        </div>
+                        <div class="donor-actions">
+                            <button class="btn btn--primary btn--sm" onclick="contactDonor('2')">Contact</button>
+                            <button class="btn btn--secondary btn--sm" onclick="viewProfile('2')">View Profile</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blood Camps Section -->
+        <section id="blood-camps" class="section blood-camps-section hidden">
+            <div class="container">
+                <h1>Upcoming Blood Donation Camps</h1>
+                
+                <div class="camps-grid">
+                    <div class="camp-card">
+                        <div class="card__body">
+                            <h3>City Hospital Blood Drive</h3>
+                            <div class="camp-details">
+                                <p><strong>Date:</strong> August 15, 2025</p>
+                                <p><strong>Time:</strong> 09:00 - 17:00</p>
+                                <p><strong>Location:</strong> MG Road, Bengaluru</p>
+                                <p><strong>Organizer:</strong> City Hospital</p>
+                                <p><strong>Available Slots:</strong> <span class="status status--success">25 slots</span></p>
+                            </div>
+                            <div class="camp-actions">
+                                <button class="btn btn--primary">Register</button>
+                                <button class="btn btn--secondary">Get Directions</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="camp-card">
+                        <div class="card__body">
+                            <h3>Corporate Wellness Camp</h3>
+                            <div class="camp-details">
+                                <p><strong>Date:</strong> August 20, 2025</p>
+                                <p><strong>Time:</strong> 10:00 - 16:00</p>
+                                <p><strong>Location:</strong> Electronic City, Bengaluru</p>
+                                <p><strong>Organizer:</strong> Tech Corp</p>
+                                <p><strong>Available Slots:</strong> <span class="status status--warning">15 slots</span></p>
+                            </div>
+                            <div class="camp-actions">
+                                <button class="btn btn--primary">Register</button>
+                                <button class="btn btn--secondary">Get Directions</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="section profile-section hidden">
+            <div class="container">
+                <h1>My Profile</h1>
+                
+                <div class="profile-grid">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Personal Information</h3>
+                            <form id="profileForm">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="profileName" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="profileEmail" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" class="form-control" id="profilePhone">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Blood Type</label>
+                                    <input type="text" class="form-control" id="profileBloodType" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">City</label>
+                                    <input type="text" class="form-control" id="profileCity">
+                                </div>
+                                <button type="button" class="btn btn--primary" onclick="editProfile()">Edit Profile</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Verification Status</h3>
+                            <div class="verification-items">
+                                <div class="verification-item">
+                                    <span class="status status--success">✓ Email Verified</span>
+                                </div>
+                                <div class="verification-item">
+                                    <span class="status status--success">✓ Phone Verified</span>
+                                </div>
+                                <div class="verification-item">
+                                    <span class="status status--warning">⏳ Medical Clearance Pending</span>
+                                </div>
+                            </div>
+                            <button class="btn btn--secondary">Upload Medical Documents</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Emergency Modal -->
+        <div id="emergencyModal" class="modal hidden">
+            <div class="modal__content emergency-modal">
+                <div class="modal__header">
+                    <h2>🚨 Emergency Blood Request</h2>
+                    <button class="modal__close" onclick="hideEmergency()">×</button>
+                </div>
+                <div class="modal__body">
+                    <div class="emergency-alert">
+                        <p><strong>URGENT:</strong> This will broadcast your request to all compatible donors in your area immediately.</p>
+                    </div>
+                    <form id="emergencyForm">
+                        <div class="form-group">
+                            <label class="form-label">Patient Name</label>
+                            <input type="text" class="form-control" id="emergencyPatient" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Blood Type Needed</label>
+                            <select class="form-control" id="emergencyBloodType" required>
+                                <option value="">Select Blood Type</option>
+                                <option value="O-">O-</option>
+                                <option value="O+">O+</option>
+                                <option value="A-">A-</option>
+                                <option value="A+">A+</option>
+                                <option value="B-">B-</option>
+                                <option value="B+">B+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="AB+">AB+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Hospital/Location</label>
+                            <input type="text" class="form-control" id="emergencyLocation" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Units Needed</label>
+                            <input type="number" class="form-control" id="emergencyUnits" min="1" max="10" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contact Number</label>
+                            <input type="tel" class="form-control" id="emergencyContact" required>
+                        </div>
+                        <button type="submit" class="btn btn--emergency btn--full-width">
+                            🚨 Send Emergency Alert
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Modal -->
+        <div id="chatModal" class="modal hidden">
+            <div class="modal__content">
+                <div class="modal__header">
+                    <h2 id="chatTitle">Chat with Donor</h2>
+                    <button class="modal__close" onclick="hideChat()">×</button>
+                </div>
+                <div class="modal__body">
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message message--received">
+                                <p>Hello! I saw your blood request. I'm available to help.</p>
+                                <span class="message-time">2:30 PM</span>
+                            </div>
+                            <div class="message message--sent">
+                                <p>Thank you so much! When would be convenient for you?</p>
+                                <span class="message-time">2:32 PM</span>
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" class="form-control" id="messageInput" placeholder="Type your message...">
+                            <button class="btn btn--primary" onclick="sendMessage()">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Emergency Button -->
+    <button class="floating-emergency-btn" onclick="triggerEmergency()">
+        🚨
+    </button>
+
+    <script src="app.js"></script>
 </body>
 </html>
