@@ -1,0 +1,99 @@
+/* styles.css */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f6f8fc;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: #b71c1c;
+  color: #fff;
+  padding: 1em 2em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+nav button {
+  margin-left: 1em;
+  font-size: 1rem;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+h1 {
+  margin: 0;
+}
+
+main {
+  max-width: 500px;
+  margin: 2em auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 2em;
+}
+
+form input, form select, form textarea, form button {
+  width: 100%;
+  margin-bottom: 1em;
+  padding: 0.8em;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+form button {
+  background: #b71c1c;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+form button:hover {
+  background: #c62828;
+}
+
+#searchResults {
+  margin-top: 2em;
+}
+
+.result-card {
+  background: #fbe9e7;
+  border-left: 5px solid #b71c1c;
+  margin-bottom: 1em;
+  padding: 1em;
+  border-radius: 6px;
+}
+
+#map {
+  width: 100%;
+  height: 200px;
+  background: #eee;
+  margin-top: 1em;
+  border-radius: 8px;
+  position: relative;
+}
+
+.urgency-alert {
+  background: #d32f2f;
+  color: white;
+  padding: 0.8em 1em;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-bottom: 1.5em;
+  text-align: center;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 #d32f2fcc;}
+  50% { box-shadow: 0 0 10px 5px #d32f2faa;}
+}
