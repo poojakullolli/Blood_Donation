@@ -3564,3 +3564,239 @@ input:checked + .toggle-slider:before {
     animation: none;
   }
 }
+
+
+
+
+
+/* Mobile-only header/layout updates (<=768px). Desktop unchanged */
+
+/* 1) Sticky top nav + hamburger sheet + one-line header layout (logo left, actions right) */
+@media (max-width: 768px) {
+  /* Sticky header with blur */
+  .header {
+    position: sticky;
+    top: max(0px, env(safe-area-inset-top));
+    z-index: 1000;
+    background: rgba(15,15,15,0.9);
+    backdrop-filter: saturate(120%) blur(20px);
+    -webkit-backdrop-filter: saturate(120%) blur(20px);
+    border-bottom: 1px solid var(--color-border, rgba(255,255,255,0.1));
+  }
+
+  /* One horizontal line: logo left, actions right */
+  .header .header__content {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important; /* Left/Right separation */
+    padding: 10px 16px !important;
+    height: 56px !important;
+    flex-wrap: nowrap !important;             /* No wrapping */
+    gap: 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Left side: BloodConnect logo + name */
+  .logo {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-shrink: 1 !important;
+    min-width: 0 !important;
+  }
+  .logo-icon {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 14px !important;
+    flex-shrink: 0 !important;
+  }
+  .logo-text {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Hide desktop tabs/icons row on mobile (use drawer instead) */
+  .nav .nav__list {
+    display: none !important;
+  }
+
+  /* Content offset for sticky header */
+  .main { padding-top: 56px; }
+
+  /* Right side: group Emergency, Login, Hamburger */
+  .header__actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Uniform compact buttons 36x36; hide labels to save space */
+  .header__actions .btn,
+  .nav__toggle {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    padding: 0 !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid var(--color-border, rgba(255,255,255,0.15)) !important;
+    background: rgba(255,255,255,0.05) !important;
+  }
+  .header__actions .btn span { display: none !important; }
+
+  /* Hamburger (three lines) with animation to X */
+  .nav__toggle {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+    cursor: pointer !important;
+    color: inherit;
+  }
+  .nav__toggle span {
+    display: block !important;
+    width: 16px !important;
+    height: 2px !important;
+    background: currentColor !important;
+    border-radius: 1px !important;
+    transition: all 0.3s ease !important;
+  }
+  body.nav-open .nav__toggle span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+  body.nav-open .nav__toggle span:nth-child(2) { opacity: 0; }
+  body.nav-open .nav__toggle span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
+
+  /* Drawer sheet under header, with blur */
+  .nav__drawer {
+    position: fixed;
+    left: 0; right: 0;
+    top: calc(56px + env(safe-area-inset-top));
+    background: rgba(15,15,15,0.95);
+    backdrop-filter: saturate(120%) blur(20px);
+    -webkit-backdrop-filter: saturate(120%) blur(20px);
+    border-top: 1px solid var(--color-border, rgba(255,255,255,0.12));
+    box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+    z-index: 1100;
+    padding: 16px;
+    max-height: 70dvh;
+    overflow: auto;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+  body.nav-open .nav__drawer {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nav__drawer a,
+  .nav__drawer .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    color: var(--color-text, #fff);
+    background: transparent;
+    text-decoration: none;
+    margin-bottom: 4px;
+    transition: background 0.2s ease;
+  }
+  .nav__drawer .nav-link:hover,
+  .nav__drawer .nav-link.active {
+    background: rgba(220, 20, 60, 0.15);
+    color: #DC143C;
+  }
+
+  /* Dim overlay when drawer open */
+  body.nav-open::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 1099;
+  }
+
+  /* Prevent body scroll while drawer open */
+  body.nav-open { overflow: hidden; }
+}
+
+/* 2) Donation Guidelines: swipeable slides on mobile */
+@media (max-width: 768px) {
+  .tips-carousel {
+    display: grid !important; /* override any previous layout */
+    grid-auto-flow: column;
+    grid-auto-columns: 86%;
+    gap: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 8px 16px;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 10px;
+  }
+  .tips-carousel::-webkit-scrollbar { height: 6px; }
+  .tips-carousel::-webkit-scrollbar-thumb {
+    background: var(--color-border, rgba(255,255,255,0.2));
+    border-radius: 10px;
+  }
+  .tips-carousel .tip-card {
+    scroll-snap-align: start;
+    opacity: 1;
+    transform: none;
+    width: auto; /* allow grid-auto-columns to control width */
+  }
+
+  .health-tips-section .section-title {
+    font-size: clamp(18px, 6vw, 22px);
+    text-align: left;
+    margin-bottom: 10px;
+  }
+  .health-tips-section .section-title::after {
+    width: 64px;
+    height: 3px;
+  }
+
+  .carousel-indicators .indicator {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+/* 3) FABs safe positioning and avoid overlap */
+@media (max-width: 768px) {
+  .floating-actions {
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    gap: 12px;
+    z-index: 1050;
+  }
+  .main { padding-bottom: 92px; }
+}
+
+/* 4) Small mobile polish */
+@media (max-width: 768px) {
+  .section { padding: 20px 0; }
+  .card { border-radius: 12px; }
+  .btn.btn--lg { width: 100%; }
+}
+
+/* Desktop safety: hide mobile-only UI, keep desktop nav */
+@media (min-width: 769px) {
+  .nav__toggle { display: none !important; }
+  .nav__drawer { display: none !important; visibility: hidden !important; }
+  .nav, .nav__list { display: flex !important; }
+  .header__actions .btn span { display: inline !important; }
+  .header__actions .btn { width: auto !important; height: auto !important; padding: 8px 16px !important; }
+  .main, main { padding-top: 0 !important; padding-bottom: 0 !important; }
+  body.nav-open::before, body.nav-open::after { display: none !important; }
+  body.nav-open { overflow: auto !important; }
+}
