@@ -22,34 +22,72 @@
     </div>
 
     <!-- Header -->
-    <header class="header" id="header">
-        <div class="container">
-            <div class="header__content">
-                <div class="logo animate-slide-in">
-                    <div class="logo-icon">
-                        <i class="fas fa-tint heartbeat-animation"></i>
-                    </div>
-                    <h1>BloodConnect</h1>
-                </div>
-                <nav class="nav" id="mainNav">
-                    <ul class="nav__list">
-                        <li class="nav-item"><a href="#home" onclick="showSection('home')" class="nav-link"><i class="fas fa-home"></i>Home</a></li>
-                        <li class="nav-item"><a href="#dashboard" onclick="showSection('dashboard')" class="nav-link"><i class="fas fa-chart-pie"></i>Dashboard</a></li>
-                        <li class="nav-item"><a href="#find-donors" onclick="showSection('find-donors')" class="nav-link"><i class="fas fa-search"></i>Find Donors</a></li>
-                        <li class="nav-item"><a href="#blood-camps" onclick="showSection('blood-camps')" class="nav-link"><i class="fas fa-calendar"></i>Blood Camps</a></li>
-                        <li class="nav-item"><a href="#profile" onclick="showSection('profile')" class="nav-link"><i class="fas fa-user"></i>Profile</a></li>
-                    </ul>
-                </nav>
-                <div class="header__actions">
-                    <button class="btn btn--emergency heartbeat-btn" id="emergencyBtn" onclick="triggerEmergency()">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <span>Emergency</span>
-                    </button>
-                    <button class="btn btn--secondary" id="authBtn" onclick="showAuth()">
-                        <i class="fas fa-user-circle"></i>
-                        <span>Login</span>
-                    </button>
-                </div>
+    <header class="header">
+    <div class="header__content">
+        <!-- Logo -->
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-tint"></i>
+            </div>
+            <span class="logo-text">BloodConnect</span>
+        </div>
+
+        <!-- Desktop Navigation (hidden on mobile) -->
+        <nav class="nav" id="mainNav">
+            <ul class="nav__list">
+                <li class="nav-item"><a href="#home" onclick="showSection('home')" class="nav-link"><i class="fas fa-home"></i>Home</a></li>
+                <li class="nav-item"><a href="#dashboard" onclick="showSection('dashboard')" class="nav-link"><i class="fas fa-chart-pie"></i>Dashboard</a></li>
+                <li class="nav-item"><a href="#find-donors" onclick="showSection('find-donors')" class="nav-link"><i class="fas fa-search"></i>Find Donors</a></li>
+                <li class="nav-item"><a href="#blood-camps" onclick="showSection('blood-camps')" class="nav-link"><i class="fas fa-calendar"></i>Blood Camps</a></li>
+                <li class="nav-item"><a href="#profile" onclick="showSection('profile')" class="nav-link"><i class="fas fa-user"></i>Profile</a></li>
+            </ul>
+        </nav>
+
+        <!-- Header Actions -->
+        <div class="header__actions">
+            <button class="btn btn--emergency heartbeat-btn" id="emergencyBtn" onclick="triggerEmergency()">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Emergency</span>
+            </button>
+            <button class="btn btn--secondary" id="authBtn" onclick="showAuth()">
+                <i class="fas fa-user-circle"></i>
+                <span>Login</span>
+            </button>
+            <!-- Mobile hamburger toggle (only visible on mobile) -->
+            <button class="nav__toggle" aria-label="Open menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Mobile navigation drawer (place after header, outside header__content) -->
+<div class="nav__drawer">
+    <a href="#home" class="nav-link" onclick="showSection('home'); closeNav();">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+    <a href="#dashboard" class="nav-link" onclick="showSection('dashboard'); closeNav();">
+        <i class="fas fa-chart-pie"></i>
+        <span>Dashboard</span>
+    </a>
+    <a href="#find-donors" class="nav-link" onclick="showSection('find-donors'); closeNav();">
+        <i class="fas fa-search"></i>
+        <span>Find Donors</span>
+    </a>
+    <a href="#blood-camps" class="nav-link" onclick="showSection('blood-camps'); closeNav();">
+        <i class="fas fa-calendar"></i>
+        <span>Blood Camps</span>
+    </a>
+    <a href="#profile" class="nav-link" onclick="showSection('profile'); closeNav();">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+    </a>
+</div>
+
+
             </div>
         </div>
     </header>
@@ -1168,6 +1206,118 @@
     </div>
 
     <script src="app.js"></script>
+
+
+    <script>
+// Mobile nav hamburger toggle + outside-click + ESC close
+(function () {
+  function closeNav() {
+    document.body.classList.remove('nav-open');
+  }
+
+  // Toggle on click
+  document.addEventListener('click', function (e) {
+    const toggle = e.target.closest('.nav__toggle');
+    if (toggle) {
+      document.body.classList.toggle('nav-open');
+      e.preventDefault();
+      return;
+    }
+
+    // Close when clicking outside drawer
+    const drawer = document.querySelector('.nav__drawer');
+    if (document.body.classList.contains('nav-open') && drawer) {
+      const inside = e.target.closest('.nav__drawer') || e.target.closest('.nav__toggle');
+      if (!inside) closeNav();
+    }
+
+    // Close drawer when a drawer link is clicked (and navigate)
+    const link = e.target.closest('.nav__drawer .nav-link, .nav__drawer a');
+    if (link) {
+      // allow your existing showSection handler to run
+      closeNav();
+    }
+  });
+
+  // Close on ESC
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      closeNav();
+    }
+  });
+
+  // Prevent body scroll when drawer is open (mobile polish)
+  const observer = new MutationObserver(() => {
+    if (document.body.classList.contains('nav-open')) {
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    }
+  });
+  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+})();
+
+// Donation Guidelines: sync pagination dots on swipe/scroll (mobile)
+(function () {
+  const track = document.querySelector('.tips-carousel');
+  const dots = document.querySelectorAll('.carousel-indicators .indicator');
+  if (!track || !dots.length) return;
+
+  let rafId = null;
+
+  function updateActiveByScroll() {
+    const cards = Array.from(track.querySelectorAll('.tip-card'));
+    if (!cards.length) return;
+
+    // Find the card most centered in the viewport of the track
+    const trackRect = track.getBoundingClientRect();
+    const centerX = trackRect.left + trackRect.width / 2;
+
+    let bestIdx = 0;
+    let bestDist = Infinity;
+
+    cards.forEach((card, i) => {
+      const r = card.getBoundingClientRect();
+      const cardCenter = r.left + r.width / 2;
+      const dist = Math.abs(cardCenter - centerX);
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestIdx = i;
+      }
+    });
+
+    dots.forEach((d, i) => d.classList.toggle('active', i === bestIdx));
+  }
+
+  function onScroll() {
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(updateActiveByScroll);
+  }
+
+  track.addEventListener('scroll', onScroll, { passive: true });
+
+  // Also sync when window resizes
+  window.addEventListener('resize', onScroll);
+
+  // Initialize state
+  updateActiveByScroll();
+
+  // Keep existing click-to-jump behavior working with your showTip() if present
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      const cards = Array.from(track.querySelectorAll('.tip-card'));
+      const card = cards[i];
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    });
+  });
+})();
+</script>
+
+
+    
 </body>
 </html>
-
